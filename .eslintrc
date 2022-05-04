@@ -1,0 +1,66 @@
+{
+    "env": {
+      "node": true
+    },
+    "extends": [
+      "eslint:recommended",
+      "plugin:node/recommended",
+      "eslint-config-airbnb-base",
+      "plugin:prettier/recommended"
+    ],
+    "plugins": ["prettier"],
+    "parser": "babel-eslint",
+    "parserOptions": {
+      "sourceType": "module",
+      "ecmaVersion": 11,
+      "ecmaFeatures": {
+        "impliedStrict": true
+      }
+    },
+    "rules": {
+      "prettier/prettier": "error",
+      "node/exports-style": ["error", "module.exports"],
+      "node/file-extension-in-import": ["error", "always"],
+      "node/prefer-global/buffer": ["error", "always"],
+      "node/prefer-global/console": ["error", "always"],
+      "node/prefer-global/process": ["error", "always"],
+      "node/prefer-global/url-search-params": ["error", "always"],
+      "node/prefer-global/url": ["error", "always"],
+      "node/prefer-promises/dns": "error",
+      "node/prefer-promises/fs": "error",
+      "no-use-before-define": ["error", { "functions": false }],
+      "import/no-useless-path-segments": [
+        "error",
+        {
+          "noUselessIndex": true
+        }
+      ],
+      "no-restricted-syntax": ["error", "LabeledStatement", "ForInStatement", "WithStatement"],
+      "no-underscore-dangle": 0,
+      "class-methods-use-this": 0,
+      "max-classes-per-file": ["error", 7],
+      "no-param-reassign": ["error", { "props": false }],
+      "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
+      "consistent-return": "off",
+      "no-unused-expressions": "off",
+      "no-await-in-loop": "off",
+      "camelcase": "off",
+      "no-useless-escape": "off",
+      "no-continue": "off",
+      "node/no-unsupported-features/node-builtins": "off",
+      "prefer-destructuring": ["error", {
+        "VariableDeclarator": {
+          "array": false,
+          "object": true
+        },
+        "AssignmentExpression": {
+          "array": false,
+          "object": false
+        }
+      }, {
+        "enforceForRenamedProperties": false
+      }],
+      "curly": ["error", "all"]
+    }
+  }
+  
