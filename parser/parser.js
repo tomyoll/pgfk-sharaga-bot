@@ -5,12 +5,13 @@ const NavigationProvider = require('../providers/navigation.provider');
 const LinkProvider = require('../providers/link.provider');
 const ActualNewsProvdier = require('../providers/actualNewsProvider');
 const AllNewsProvider = require('../providers/allNewsProvider');
+const FirstPageProvider = require('../providers/firstPageNews.provider');
 
 class Parser {
   constructor() {
     this.context = {};
     (async () => {
-      const browser = await chromium.launch();
+      const browser = await chromium.launch({ headless: false });
       this.context = await browser.newContext();
       await this.context.newPage();
     })();
@@ -87,10 +88,32 @@ class Parser {
         };
       });
     });
-    console.log(newsOnPage.forEach((i) => console.log({ year: i.year, month: i.month })));
+    console.log(newsOnPage.forEach((i) => (i.page = pageNumber)));
     console.log({ year: newsOnPage.year, month: newsOnPage.month });
     await page.close();
     return newsOnPage;
+  }
+
+  async checkUpdates() {
+    try {
+      const dailyNews = await FirstPageProvider.getMany({});
+      const actualDailyNews = await this.getNewsOnPage(1);
+      const dailyNewsDuplicate = dailyNews;
+      console.log(actualDailyNews.length);
+      console.log(dailyNewsDuplicate.length);
+      const news = [];
+      for (let i = 0; i < actualDailyNews.length; i++) {
+        if (dailyNews[i].link !== actualDailyNews[i].link) {
+          news.push(actualDailyNews[i]);
+        }
+      }
+      if (news.length) {
+        await this.getAllNews();
+      }
+      console.log(news);
+    } catch (e) {
+      console.log(e);
+    }
   }
 
   async getAllNews() {
@@ -99,14 +122,20 @@ class Parser {
       await page.goto(`https://www.college.uzhnu.edu.ua`);
 
       const pagesCount = await this.getPagesCount(page);
+      await FirstPageProvider.deleteMany({});
       await AllNewsProvider.deleteMany({});
-      for (let i = 0; i <= pagesCount; i++) {
+      for (let i = 1; i <= 4; i++) {
         const newsOnPage = await this.getNewsOnPage(i);
 
         console.log(
           `=========================== News frome page #${i} ===========================`
         );
+        // console.log(newsOnPage);
         await AllNewsProvider.createSingle(newsOnPage);
+
+        if (i === 1) {
+          await FirstPageProvider.createSingle(newsOnPage);
+        }
       }
 
       await page.close();

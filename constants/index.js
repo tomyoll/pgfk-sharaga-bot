@@ -5,5 +5,6 @@ module.exports = {
     NAVIGATION: 'Navigation',
     LINK: 'Link',
     USER_STATE: 'UserState',
+    FIRST_PAGE: 'firstPage',
   },
 };

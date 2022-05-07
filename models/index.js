@@ -4,4 +4,5 @@ module.exports = {
   Navigation: require('./navigation.model'),
   Link: require('./link.model'),
   UserState: require('./userState.model'),
+  firstPage: require('./firstPageNews.model'),
 };

@@ -3,6 +3,8 @@ require('dotenv').config();
 const db = require('./helpers/db');
 const fs = require('fs');
 
+const cronJobs = require('./helpers/bot/crons');
+
 const { parseArchiveDate } = require('./helpers/');
 
 const NavigationProvider = require('./providers/navigation.provider');
@@ -26,6 +28,7 @@ const TOKEN = process.env.TOKEN;
 const app = express();
 (async () => await db())();
 const bot = new Telegraf(TOKEN);
+cronJobs.setup();
 
 bot.start(async (ctx) => {
   const navigation = await NavigationProvider.getNavigationTitles();
@@ -49,6 +52,10 @@ bot.command('actualNews', async (ctx) => {
 
 bot.command('allNews', async (ctx) => {
   await parser.getAllNews();
+});
+
+bot.command('checkUpdates', async (ctx) => {
+  await parser.checkUpdates();
 });
 
 bot.command('getNav', async (ctx) => {
@@ -138,3 +145,5 @@ bot.on('message', (ctx) => {
 bot.launch();
 
 app.listen(PORT, () => console.log(`♂️ ♂️ ♂️ Server is running on port ${PORT} ♂️ ♂️ ♂️`));
+
+app.get('/', (req, res) => res.send('work'));
