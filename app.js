@@ -43,22 +43,18 @@ bot.start(async (ctx) => {
 
 bot.command('setNav', async (ctx) => {
   await parser.setNavigation();
-  return ctx.reply('success');
 });
 
 bot.command('actualNews', async (ctx) => {
   await parser.getActualNews();
-  return ctx.reply('success');
 });
 
 bot.command('allNews', async (ctx) => {
   await parser.getAllNews();
-  return ctx.reply('success');
 });
 
 bot.command('checkUpdates', async (ctx) => {
   await parser.checkUpdates();
-  return ctx.reply('success');
 });
 
 bot.command('getNav', async (ctx) => {
