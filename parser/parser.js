@@ -11,7 +11,7 @@ class Parser {
   constructor() {
     this.context = {};
     (async () => {
-      const browser = await chromium.launch({ headless: false });
+      const browser = await chromium.launch({ headless: true });
       this.context = await browser.newContext();
       await this.context.newPage();
     })();
