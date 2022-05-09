@@ -48,14 +48,17 @@ bot.command('setNav', async (ctx) => {
 
 bot.command('actualNews', async (ctx) => {
   await parser.getActualNews();
+  ctx.reply('success');
 });
 
 bot.command('allNews', async (ctx) => {
   await parser.getAllNews();
+  ctx.reply('success');
 });
 
 bot.command('checkUpdates', async (ctx) => {
   await parser.checkUpdates();
+  ctx.reply('success');
 });
 
 bot.command('getNav', async (ctx) => {
