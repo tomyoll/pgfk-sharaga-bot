@@ -124,7 +124,7 @@ class Parser {
       const pagesCount = await this.getPagesCount(page);
       await FirstPageProvider.deleteMany({});
       await AllNewsProvider.deleteMany({});
-      for (let i = 1; i <= 4; i++) {
+      for (let i = 1; i <= pagesCount; i++) {
         const newsOnPage = await this.getNewsOnPage(i);
 
         console.log(
@@ -138,7 +138,7 @@ class Parser {
         }
       }
 
-      await page.close();
+      return page.close();
     } catch (e) {
       console.log(e.message);
     }

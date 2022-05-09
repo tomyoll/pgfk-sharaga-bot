@@ -43,22 +43,22 @@ bot.start(async (ctx) => {
 
 bot.command('setNav', async (ctx) => {
   await parser.setNavigation();
-  ctx.reply('success');
+  return ctx.reply('success');
 });
 
 bot.command('actualNews', async (ctx) => {
   await parser.getActualNews();
-  ctx.reply('success');
+  return ctx.reply('success');
 });
 
 bot.command('allNews', async (ctx) => {
   await parser.getAllNews();
-  ctx.reply('success');
+  return ctx.reply('success');
 });
 
 bot.command('checkUpdates', async (ctx) => {
   await parser.checkUpdates();
-  ctx.reply('success');
+  return ctx.reply('success');
 });
 
 bot.command('getNav', async (ctx) => {
@@ -102,7 +102,6 @@ bot.action(/{"page":+/, async (ctx) => {
   const pageLink = await LinkProvider.getSingleById(callbackData.page);
   console.log(pageLink);
   ctx.reply(pageLink.url);
-  console.log(callbackData);
 });
 
 bot.action('newsArchive', async (ctx) => {
@@ -137,8 +136,8 @@ bot.action(/{"arch":+/, async (ctx) => {
       await ctx.reply(linkItem);
     }
   }
-  ctx.deleteMessage(oldMessage);
   ctx.reply('Оберіть, що вас цікавить', getMainMenu(navigation));
+  ctx.deleteMessage(oldMessage);
 });
 
 bot.on('message', (ctx) => {
