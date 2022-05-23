@@ -6,5 +6,6 @@ module.exports = {
     LINK: 'Link',
     USER_STATE: 'UserState',
     FIRST_PAGE: 'firstPage',
+    USER: 'User',
   },
 };

@@ -1,7 +1,10 @@
 const express = require('express');
 require('dotenv').config();
+const cors = require('cors');
 const db = require('./helpers/db');
 const fs = require('fs');
+const indexRouter = require('./routes/');
+const helmet = require('helmet');
 
 const cronJobs = require('./helpers/bot/crons');
 
@@ -20,12 +23,28 @@ const { getMainMenu, getSubNavigation, archiveKeyboard } = require('./helpers/bo
 
 const parser = require('./parser/parser');
 const userStateProvider = require('./providers/userState.provider');
+const userProvider = require('./providers/user.provider');
 const { json } = require('express/lib/response');
 
 const PORT = process.env.PORT || 3000;
 const TOKEN = process.env.TOKEN;
 
 const app = express();
+
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+
+app.use(helmet());
+
+app.use(
+  cors({
+    credentials: true,
+    origin: process.env.CLIENT_URL,
+  })
+);
+
+app.use(indexRouter);
+
 (async () => await db())();
 const bot = new Telegraf(TOKEN);
 cronJobs.setup();
@@ -38,6 +57,26 @@ bot.start(async (ctx) => {
 
   if (userState) {
     await userStateProvider.createSingle({ user: userId, keyboardState: 'MainMenu' });
+  }
+
+  const telegramId = ctx.from.id;
+  const chatId = ctx.chat.id;
+  const userName = ctx.from.username;
+
+  console.log(chatId);
+
+  console.log(telegramId);
+
+  console.log(userName);
+
+  const existingUser = await userProvider.getSingle({ chatId });
+
+  console.log(existingUser);
+
+  console.log({ telegramId, userName, chatId });
+
+  if (!existingUser) {
+    await userProvider.createSingle({ telegramId, userName, chatId });
   }
 });
 
@@ -140,8 +179,14 @@ bot.on('message', (ctx) => {
   console.log(ctx);
 });
 
+async function sendMessage(payload, chats) {
+  chats.forEach(({ chatId }) => bot.telegram.sendMessage(chatId, payload));
+}
+
 bot.launch();
 
 app.listen(PORT, () => console.log(`♂️ ♂️ ♂️ Server is running on port ${PORT} ♂️ ♂️ ♂️`));
 
 app.get('/', (req, res) => res.send('work'));
+
+module.exports.sendMessage = sendMessage;

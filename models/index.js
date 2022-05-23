@@ -5,4 +5,5 @@ module.exports = {
   Link: require('./link.model'),
   UserState: require('./userState.model'),
   firstPage: require('./firstPageNews.model'),
+  User: require('./users.model'),
 };

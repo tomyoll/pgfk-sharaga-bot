@@ -10,9 +10,11 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "cors": "^2.8.5",
     "cron": "^2.0.0",
     "dotenv": "^16.0.0",
     "express": "^4.17.3",
+    "helmet": "^5.1.0",
     "mongoose": "^6.2.8",
     "playwright": "^1.20.1",
     "telegraf": "4.7.0",
