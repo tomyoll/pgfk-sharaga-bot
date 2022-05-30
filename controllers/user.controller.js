@@ -2,10 +2,15 @@ const userProvider = require('../providers/user.provider');
 const User = require('../models/users.model');
 const bot = require('../app');
 
+const UserService = require('../services/user.service');
+
 class UserController {
   static async getAllUsers(req, res) {
     try {
-      const response = await userProvider.getMany({}, { _id: 1, userName: 1, telegramId: 1 });
+      const response = await userProvider.getMany(
+        {},
+        { _id: 1, userName: 1, telegramId: 1, chatId: 1 }
+      );
 
       res.status(200).json(response);
     } catch (e) {
@@ -14,17 +19,8 @@ class UserController {
   }
 
   static async sendMessage(req, res) {
-    const { paylaod } = req.body;
-
-    const usersCount = await User.countDocuments();
-
-    for (let i = 0; i <= usersCount; i++) {
-      const users = await User.find()
-        .skip(i * 10)
-        .limit(10);
-
-      bot.sendMessage(paylaod, users);
-    }
+    const { payload, users } = req.body;
+    await UserService.sendMessage(payload, users);
   }
 }
 

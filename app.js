@@ -179,9 +179,19 @@ bot.on('message', (ctx) => {
   console.log(ctx);
 });
 
-async function sendMessage(payload, chats) {
+const sendMessage = async (payload, chats) => {
   chats.forEach(({ chatId }) => bot.telegram.sendMessage(chatId, payload));
-}
+};
+
+const stop = (reason) => {
+  console.log(bot);
+  bot.stop();
+};
+
+const launch = () => {
+  console.log(bot.telegram.options);
+  bot.launch();
+};
 
 bot.launch();
 
@@ -189,4 +199,6 @@ app.listen(PORT, () => console.log(`♂️ ♂️ ♂️ Server is running on po
 
 app.get('/', (req, res) => res.send('work'));
 
+module.exports.stop = stop;
 module.exports.sendMessage = sendMessage;
+module.exports.launch = launch;

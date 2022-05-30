@@ -8,4 +8,7 @@ module.exports = {
     FIRST_PAGE: 'firstPage',
     USER: 'User',
   },
+  VALIDATION: {
+    SPEC_SYMBOLS: /[-[\]{}()*+?`"<>.,\\/^$|#\s]/g,
+  },
 };
