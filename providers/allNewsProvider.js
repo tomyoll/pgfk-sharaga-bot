@@ -7,10 +7,7 @@ class AllNewsProvider extends Provider {
   }
 
   async getNews({ skip = 1, limit = 25, search }) {
-    const match = {
-      $skip: skip,
-      $limit: limit,
-    };
+    const match = {};
 
     if (search) {
       match.$or = [
@@ -23,7 +20,7 @@ class AllNewsProvider extends Provider {
     }
 
     const [data, total] = await Promise.all([
-      this.getMany(match),
+      this.getMany(match, {}, { skip, limit }),
       this._.countDocuments(match.$or),
     ]);
 
