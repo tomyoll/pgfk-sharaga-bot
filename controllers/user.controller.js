@@ -22,6 +22,12 @@ class UserController {
     const { payload, users } = req.body;
     await UserService.sendMessage(payload, users);
   }
+
+  static async signUp(req, res) {
+    const { password, email } = req.body;
+
+    const hashedPassword = await argon2.hash(password);
+  }
 }
 
 module.exports = UserController;

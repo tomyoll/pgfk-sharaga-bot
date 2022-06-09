@@ -36,11 +36,9 @@ class Parser {
       return newsList.map((i) => {
         const data = i.querySelector('a');
         const image = data.querySelector('img');
-        const description = data.getElementsByClassName('n_co_c');
 
         return {
           title: image.title,
-          description: description[0].innerText,
           image: image.currentSrc,
           link: data.href,
         };
@@ -70,7 +68,6 @@ class Parser {
         const image = thumb.querySelector('img').dataset.src;
         const tags = Array.from(thumb.querySelectorAll('.cat_p p')).map((i) => i.innerText);
         const title = item.getElementsByClassName('n_co_t')[0].innerText;
-        const description = item.getElementsByClassName('n_co_c')[0].innerText;
         const date = item.getElementsByClassName('meta-date')[0].innerText;
         const year = date ? +date.split('.')[2] : null;
         const month = date ? +date.split('.')[1] : null;
@@ -78,7 +75,6 @@ class Parser {
 
         return {
           title,
-          description,
           tags,
           image,
           date,
@@ -88,8 +84,6 @@ class Parser {
         };
       });
     });
-    console.log(newsOnPage.forEach((i) => (i.page = pageNumber)));
-    console.log({ year: newsOnPage.year, month: newsOnPage.month });
     await page.close();
     return newsOnPage;
   }

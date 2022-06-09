@@ -1,4 +1,3 @@
-const userProvider = require('../providers/user.provider');
 const User = require('../models/users.model');
 const bot = require('../app');
 
@@ -6,7 +5,7 @@ class UserService {
   async sendMessage(payload, selectedUsers) {
     const usersCount = await User.countDocuments();
 
-    if (selectedUsers.length) {
+    if (Array.isArray(selectedUsers) && selectedUsers.length) {
       await bot.sendMessage(payload, selectedUsers);
     } else {
       for (let i = 0; i <= usersCount; i++) {

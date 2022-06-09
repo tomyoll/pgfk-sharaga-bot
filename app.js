@@ -2,10 +2,8 @@ const express = require('express');
 require('dotenv').config();
 const cors = require('cors');
 const db = require('./helpers/db');
-const fs = require('fs');
 const indexRouter = require('./routes/');
-const helmet = require('helmet');
-
+const morgan = require('morgan');
 const cronJobs = require('./helpers/bot/crons');
 
 const { parseArchiveDate } = require('./helpers/');
@@ -13,18 +11,14 @@ const { parseArchiveDate } = require('./helpers/');
 const NavigationProvider = require('./providers/navigation.provider');
 const LinkProvider = require('./providers/link.provider');
 const AllNewsProvider = require('./providers/allNewsProvider');
-const UserStateProvider = require('./providers/userState.provider');
 
-const { Telegraf, Markup, Extra } = require('telegraf');
-
-let { MAIN_NAVIGATION } = require('./helpers/bot/buttonNames');
+const { Telegraf, Markup } = require('telegraf');
 
 const { getMainMenu, getSubNavigation, archiveKeyboard } = require('./helpers/bot/keyboards');
 
 const parser = require('./parser/parser');
 const userStateProvider = require('./providers/userState.provider');
 const userProvider = require('./providers/user.provider');
-const { json } = require('express/lib/response');
 
 const PORT = process.env.PORT || 3000;
 const TOKEN = process.env.TOKEN;
@@ -34,7 +28,7 @@ const app = express();
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
-app.use(helmet());
+app.use(morgan('dev'));
 
 app.use(
   cors({
@@ -46,7 +40,8 @@ app.use(
 app.use(indexRouter);
 
 (async () => await db())();
-const bot = new Telegraf(TOKEN);
+const bot = new Telegraf(TOKEN, { handlerTimeout: 1000000000 });
+
 cronJobs.setup();
 
 bot.start(async (ctx) => {
@@ -63,15 +58,7 @@ bot.start(async (ctx) => {
   const chatId = ctx.chat.id;
   const userName = ctx.from.username;
 
-  console.log(chatId);
-
-  console.log(telegramId);
-
-  console.log(userName);
-
   const existingUser = await userProvider.getSingle({ chatId });
-
-  console.log(existingUser);
 
   console.log({ telegramId, userName, chatId });
 
@@ -179,17 +166,15 @@ bot.on('message', (ctx) => {
   console.log(ctx);
 });
 
-const sendMessage = async (payload, chats) => {
-  chats.forEach(({ chatId }) => bot.telegram.sendMessage(chatId, payload));
+const sendMessage = (payload, chats) => {
+  chats.forEach(async ({ chatId }) => await bot.telegram.sendMessage(chatId, payload));
 };
 
-const stop = (reason) => {
-  console.log(bot);
+const stop = () => {
   bot.stop();
 };
 
 const launch = () => {
-  console.log(bot.telegram.options);
   bot.launch();
 };
 

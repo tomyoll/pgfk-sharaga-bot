@@ -6,4 +6,5 @@ module.exports = {
   UserState: require('./userState.model'),
   firstPage: require('./firstPageNews.model'),
   User: require('./users.model'),
+  Admin: require('./admin.model'),
 };
