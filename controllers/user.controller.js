@@ -21,6 +21,8 @@ class UserController {
   static async sendMessage(req, res) {
     const { payload, users } = req.body;
     await UserService.sendMessage(payload, users);
+
+    res.sendStatus(201);
   }
 
   static async signUp(req, res) {

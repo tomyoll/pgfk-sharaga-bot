@@ -15,8 +15,6 @@ class AuthMiddleware {
     try {
       const token = AuthMiddleware.getTokenFromRequest(req);
 
-      console.log(token);
-
       if (!token) {
         return res.sendStatus(401);
       }
@@ -37,11 +35,6 @@ class AuthMiddleware {
 
       return next();
     } catch (e) {
-      // if (e.message === 'jwt expired') {
-      //   console.log('jwt expired');
-      //   return res.status(200).send('expired');
-      // }
-
       return res.sendStatus(401);
     }
   }

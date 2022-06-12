@@ -72,6 +72,12 @@ class AdminService {
       },
     };
   }
+
+  async signOut(userId) {
+    await adminProvider.updateSingle({ _id: userId }, { token: null });
+
+    return true;
+  }
 }
 
 module.exports = new AdminService();

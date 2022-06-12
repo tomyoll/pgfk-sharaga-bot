@@ -84,6 +84,7 @@ class Parser {
         };
       });
     });
+    newsOnPage.forEach((item) => (item.page = pageNumber));
     await page.close();
     return newsOnPage;
   }
@@ -121,14 +122,16 @@ class Parser {
       for (let i = 1; i <= pagesCount; i++) {
         const newsOnPage = await this.getNewsOnPage(i);
 
+        console.log(newsOnPage);
+
         console.log(
           `=========================== News frome page #${i} ===========================`
         );
         // console.log(newsOnPage);
-        await AllNewsProvider.createSingle(newsOnPage);
+        await AllNewsProvider.createMany(newsOnPage);
 
         if (i === 1) {
-          await FirstPageProvider.createSingle(newsOnPage);
+          await FirstPageProvider.createMany(newsOnPage);
         }
       }
 

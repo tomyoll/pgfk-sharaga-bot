@@ -42,6 +42,7 @@ class BotController {
       const { id } = req.params;
 
       const responseData = await allNewsProvider.getSingleById(id);
+      console.log(responseData);
       res.status(200).json(responseData);
       return responseData;
     } catch (e) {

@@ -1,5 +1,6 @@
 const adminProvider = require('../providers/admin.provider');
 const adminService = require('../services/admin.service');
+const userService = require('../services/user.service');
 
 class AdminController {
   static async signUp(req, res) {
@@ -33,6 +34,14 @@ class AdminController {
     const admin = await adminProvider.getSingleById(adminId, { _id: 1, email: 1, role: 1 });
 
     res.status(200).json({ admin });
+  }
+
+  static async signOut(req, res) {
+    const { userId } = req;
+
+    await adminService.signOut(userId);
+
+    return res.sendStatus(200);
   }
 }
 

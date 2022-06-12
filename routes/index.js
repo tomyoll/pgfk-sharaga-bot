@@ -33,6 +33,8 @@ router.post('/admin/signIn', AdminController.signIn);
 
 router.get('/admin/profile', AuthMiddleware.authenticateToken, AdminController.getProfile);
 
+router.get('/admin/signOut', AuthMiddleware.authenticateToken, AdminController.signOut);
+
 router.get('/refresh', AuthMiddleware.refreshToken);
 
 module.exports = router;

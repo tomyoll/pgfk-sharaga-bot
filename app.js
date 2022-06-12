@@ -167,7 +167,11 @@ bot.on('message', (ctx) => {
 });
 
 const sendMessage = (payload, chats) => {
-  chats.forEach(async ({ chatId }) => await bot.telegram.sendMessage(chatId, payload));
+  for (let i = 0; i < chats.length; i++) {
+    bot.telegram.sendMessage(chats[i].chatId, payload);
+  }
+
+  return true;
 };
 
 const stop = () => {
