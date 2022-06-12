@@ -34,7 +34,7 @@ function archiveKeyboard(archive) {
 
   buttonsArray.push(Markup.button.callback('Назад', 'back'));
 
-  return Markup.inlineKeyboard(buttonsArray, { columns: 4 }).resize();
+  return Markup.inlineKeyboard(buttonsArray, { columns: 3 }).resize();
 }
 
 module.exports = {

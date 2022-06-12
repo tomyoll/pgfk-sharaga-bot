@@ -187,8 +187,11 @@ class Parser {
         i.url = linkId;
       });
     });
-    await LinkProvider.createMany(linksArray);
-    await NavigationProvider.createMany(topMenu);
+    await NavigationProvider.deleteMany({});
+    await Promise.all([
+      LinkProvider.createMany(linksArray),
+      NavigationProvider.createMany(topMenu),
+    ]);
   }
 }
 

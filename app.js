@@ -188,6 +188,10 @@ app.listen(PORT, () => console.log(`♂️ ♂️ ♂️ Server is running on po
 
 app.get('/', (req, res) => res.send('work'));
 
+process.on('uncaughtException', (err) => {
+  console.error('Caught exception: ', err);
+});
+
 module.exports.stop = stop;
 module.exports.sendMessage = sendMessage;
 module.exports.launch = launch;
